@@ -62,7 +62,7 @@ static int symtab_build_section(Elf *elf, Elf_Scn *section,
 		struct symbol_s *sym = array_push(&g_symbol_table);
 
 		sym->name = strdup(elf_strptr(elf, shdr.sh_link, (size_t)esym.st_name));
-
+		printf("symbol: %s\b", sym->name);
 		sym->address = esym.st_value - base_addr + offset;
 		sym->size = esym.st_size;
 		sym->weak = (GELF_ST_BIND(esym.st_info) == STB_WEAK);
@@ -93,6 +93,7 @@ static uintptr_t symtab_elf_base(Elf *elf)
 
 static int symtab_build_file(const char *path, uintptr_t start, uintptr_t end)
 {
+	printf("symtab_build_file: %s\n",path);
 	/* open file */
 	int fd = open(path, O_RDONLY);
 	if (fd < 0) {
